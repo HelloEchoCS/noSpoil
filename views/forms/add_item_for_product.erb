@@ -1,0 +1,26 @@
+<div class="d-flex w-50">
+  <form action="/product/<%= params['product_id'] %>/add" method="post">
+    <div class="mb-3">
+      <label for="product" class="form-label">Product</label>
+      <select name="product-id" class="form-select" disabled>
+        <option value="<%= @product.name %>" selected><%= @product.name %></option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input name="quantity" type="number" step="any" min="1" class="form-control" value="<%== @item.quantity if @item %>" required>
+    </div>
+    <div class="mb-3">
+      <label for="best-before-date" class="form-label">Best Before</label>
+      <input name="best-before-date" type="date" class="form-control" id="best-before-date" value="<%== @item.bbd if @item %>" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
+
+
+<% content_for :header_title do %>
+  <div class="py-3">
+    <h3>New Item</h3>
+  </div>
+<% end %>

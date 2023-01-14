@@ -1,0 +1,79 @@
+<% content_for :header_title do %>
+  <div class="d-flex fs-5 py-3">
+      <a href="/product/add" class="px-3 btn btn-lg btn-outline-light"><i class="bi bi-plus-circle-fill"></i> New Product</a>
+  </div>
+<% end %>
+
+<table class="table table-dark table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Actions</th>
+      <th scope="col">Name</th>
+      <th scope="col">In Stock Quantities</th>
+      <th scope="col">Unit</th>
+      <th scope="col">Spoil Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td class="fit">
+          <div class="d-inline dropdown">
+            <a class="px-0 btn btn-sm btn-secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots-vertical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <form action="/product/<%= product.id %>/edit" method="get">
+                  <button type="submit" class="dropdown-item">Edit</button>
+                </form>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteDialog<%= product.id %>">Delete</button>
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td><a href="/product/<%= product.id %>" class="text-decoration-none text-info"><%= product.name %></a></td>
+        <td><%= product.in_stock_item_count %></td>
+        <td><%= product.unit %></td>
+        <td><%= format_rate(product.spoil_rate) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%# Pagination %>
+<div>
+  <nav>
+    <ul class="pagination">
+      <li class="page-item <%== 'disabled' if @page == 1 %>"><a class="page-link" href="/product?page=<%= @page - 1 %>">Previous</a></li>
+      <% 1.upto(@page_count) do |num| %>
+        <li class="page-item"><a class="page-link <%== 'active' if @page == num %>" href="/product?page=<%= num %>"><%= num %></a></li>
+      <% end %>
+      <li class="page-item <%== 'disabled' if @page == @page_count %>"><a class="page-link" href="/product?page=<%= @page + 1 %>">Next</a></li>
+    </ul>
+  </nav>
+</div>
+
+<%# Delete dialog modal %>
+<% @products.each do |product| %>
+  <div class="modal fade" id="deleteDialog<%= product.id %>" tabindex="-1" aria-labelledby="deleteDialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-bg-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteDialogTitle">Are you sure?</h5>
+        </div>
+        <div class="modal-body">
+          This will delete the product and ALL its items.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form action="/product/<%= product.id %>/delete" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

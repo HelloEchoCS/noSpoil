@@ -1,0 +1,17 @@
+<div class="position-absolute top-50 start-50 translate-middle">
+  <div class="p-5 container">
+    <h1>Sign Up</h1>
+    <form class="py-3" action="/sign_up" method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input name="username" class="form-control" id="username" value="<%= params[:username] %>" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input name="password" type="password" class="form-control" id="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="/sign_in">Sign In</a></p>
+  </div>
+</div>

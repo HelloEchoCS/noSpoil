@@ -1,0 +1,80 @@
+<% content_for :header_title do %>
+  <div class="d-flex fs-5 py-3">
+      <a href="/stock/add" class="px-3 btn btn-lg btn-outline-light"><i class="bi bi-plus-circle-fill"></i> New Item</a>
+  </div>
+<% end %>
+
+<div class="d-inline-flex gap-3 py-0">
+  <% count = due_today_alert %>
+  <div class="card text-bg-danger mb-3 <%== 'visually-hidden' unless count %>">
+    <div class="card-body py-2">
+      <p class="card-text"><span class="fw-bold px-1"><%= count %></span> item(s) due today</p>
+    </div>
+  </div>
+  <% count = due_imminent_alert %>
+  <div class="card text-bg-warning mb-3 <%== 'visually-hidden' unless count %>">
+    <div class="card-body py-2">
+      <p class="card-text"><span class="fw-bold px-1"><%= count %></span> item(s) due in 5 days</p>
+    </div>
+  </div>
+</div>
+
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Actions</th>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Best Before</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each_with_index do |item, idx| %>
+      <tr>
+        <td class="fit">
+          <form class="d-inline" action="/stock/item/<%= item.id %>/consume" method="post">
+            <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Consume">
+              <i class="fa-solid fa-utensils"></i>
+            </button>
+          </form>
+          <form class="d-inline" action="/stock/item/<%= item.id %>/spoil" method="post">
+            <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Spoil">
+              <i class="fa-solid fa-toilet"></i>
+            </button>
+          </form>
+          <div class="d-inline dropdown">
+            <a class="px-0 btn btn-sm btn-secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots-vertical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <form action="/stock/item/<%= item.id %>/edit" method="get">
+                  <button type="submit" class="dropdown-item">Edit</button>
+                </form>
+              </li>
+              <li>
+                <form action="/stock/item/<%= item.id %>/delete" method="post">
+                  <button type="submit" class="dropdown-item text-danger">Delete</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td><%= item.product %></td>
+        <td><%= item.quantity%> <%= item.unit %></td>
+        <td><%= item.bbd%><span class="mx-2 badge rounded-pill <%= due_status_color(item) %>"><%= format_days_left(item) %></span></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%# Pagination %>
+<nav>
+  <ul class="pagination">
+    <li class="page-item <%== 'disabled' if @page == 1 %>"><a class="page-link" href="/stock?page=<%= @page - 1 %>">Previous</a></li>
+    <% 1.upto(@page_count) do |num| %>
+      <li class="page-item"><a class="page-link <%== 'active' if @page == num %>" href="/stock?page=<%= num %>"><%= num %></a></li>
+    <% end %>
+    <li class="page-item <%== 'disabled' if @page == @page_count %>"><a class="page-link" href="/stock?page=<%= @page + 1 %>">Next</a></li>
+  </ul>
+</nav>
