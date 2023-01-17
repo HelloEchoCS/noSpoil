@@ -1,10 +1,11 @@
 require 'bcrypt'
-require_relative 'mongodb_connection'
+require 'mongo'
 
 # Provides public instance methods for searching and creating users
 class MongoUserHandler
   def initialize(db)
-    @db = db
+    mongo_client = Mongo::Client.new(['127.0.0.1:27017'], :database => 'test')
+    @db = mongo_client[:users]
   end
   # PUBLIC INSTENCE METHODS
 
