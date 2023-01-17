@@ -26,6 +26,7 @@ end
 
 before do
   @db = DatabaseConnection.new(logger)
+  @mongo_db = @db.mongo_db
   @user_handler = UserHandler.new(@db)
   @item_handler = ItemHandler.new(@db)
   @product_handler = ProductHandler.new(@db)
