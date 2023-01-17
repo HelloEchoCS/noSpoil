@@ -1,5 +1,5 @@
 require 'bcrypt'
-require_relative 'dbconnection'
+require_relative 'mongondb_connection'
 
 # Provides public instance methods for searching and creating users
 class MongoUserHandler
