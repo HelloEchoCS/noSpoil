@@ -12,9 +12,9 @@ class MongoUserHandler
   # User object contains a BCrypt::Password object so we could compare it with another password string
   def find_by_username(username)
     result = find_user_by_username(username)
-    # return if result.ntuples.zero?
+    return if result.nil?
 
-    password = result[0]['password']
+    password = result['password']
     User.new(username, password)
   end
 
@@ -22,9 +22,9 @@ class MongoUserHandler
   # This method is primarily used to track user's sign-in status.
   def find_by_session_id(session_id)
     result = find_user_by_session_id(session_id)
-    # return if result.ntuples.zero?
+    return if result.nil?
 
-    username = result[0]['username']
+    username = result['username']
     User.new(username)
   end
 
@@ -45,11 +45,11 @@ class MongoUserHandler
   end
 
   def find_user_by_username(username)
-    @db.find({ 'username' => username })
+    @db.find({ 'username' => username }).first
   end
 
   def find_user_by_session_id(session_id)
-    @db.find({ 'session_id' => session_id })
+    @db.find({ 'session_id' => session_id }).first
   end
 
   def update_session_id(username, new_session_id)

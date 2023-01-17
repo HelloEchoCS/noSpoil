@@ -5,6 +5,7 @@ require 'tilt/erubis'
 require 'pry'
 
 require_relative 'lib/dbconnection'
+require_relative 'lib/user_mongo'
 require_relative 'lib/user'
 require_relative 'lib/items'
 require_relative 'lib/products'
@@ -26,8 +27,9 @@ end
 
 before do
   @db = DatabaseConnection.new(logger)
-  @mongo_db = @db.mongo_db
-  @user_handler = UserHandler.new(@db)
+  @mongo_db = MongoDatabaseConnection.new()
+  @user_collection = @mongo_db.user_collection
+  @user_handler = MongoUserHandler.new(@user_collection)
   @item_handler = ItemHandler.new(@db)
   @product_handler = ProductHandler.new(@db)
   @user = @user_handler.find_by_session_id(session.id) # user is not signed in if @user is nil
