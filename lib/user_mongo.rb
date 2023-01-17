@@ -54,7 +54,7 @@ class MongoUserHandler
   end
 
   def update_session_id(username, new_session_id)
-    @db.update_one({ 'username' => username }, { 'session_id' => new_session_id })
+    @db.update_one({ 'username' => username }, { 'session_id' => "#{new_session_id}" })
   end
 
   def remove_session_id(username)
