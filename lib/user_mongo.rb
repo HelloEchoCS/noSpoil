@@ -50,7 +50,7 @@ class MongoUserHandler
   end
 
   def find_user_by_session_id(session_id)
-    @db.find({ 'session_id' => session_id }).first
+    @db.find({ 'session_id' => "#{session_id}" }).first
   end
 
   def update_session_id(username, new_session_id)
