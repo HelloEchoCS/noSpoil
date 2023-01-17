@@ -5,6 +5,7 @@ require 'tilt/erubis'
 require 'pry'
 
 require_relative 'lib/dbconnection'
+require_relative 'lib/mongodb_connection'
 require_relative 'lib/user_mongo'
 require_relative 'lib/user'
 require_relative 'lib/items'
