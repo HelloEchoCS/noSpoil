@@ -3,7 +3,7 @@ require 'mongo'
 
 # Provides public instance methods for searching and creating users
 class MongoUserHandler
-  def initialize(db)
+  def initialize()
     mongo_client = Mongo::Client.new(['127.0.0.1:27017'], :database => 'test')
     @db = mongo_client[:users]
   end
